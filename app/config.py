@@ -23,6 +23,7 @@ class Settings(BaseSettings):
     # Optional Image Generation Keys
     hf_api_token: Optional[str] = os.getenv("HF_API_TOKEN", None)
     google_api_key: Optional[str] = os.getenv("GOOGLE_API_KEY", None)
+    stability_api_key: Optional[str] = os.getenv("STABILITY_API_KEY", None)
     
     # Authentication
     google_client_id: Optional[str] = os.getenv("GOOGLE_CLIENT_ID", None)

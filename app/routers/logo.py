@@ -86,7 +86,39 @@ async def generate_logo_prompt(request: LogoPromptRequest):
                 print(f"Google Imagen Error: {e}")
                 # Fallback continues below
         
-        # Option B: Hugging Face Inference API (High Quality, requires Token)
+        # Option B: Stability AI (SDXL) - High Quality
+        if not image_url and settings.stability_api_key:
+            try:
+                stability_api_url = "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image"
+                headers = {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "Authorization": f"Bearer {settings.stability_api_key}",
+                }
+                payload = {
+                    "text_prompts": [{"text": image_prompt}],
+                    "cfg_scale": 7,
+                    "height": 1024,
+                    "width": 1024,
+                    "samples": 1,
+                    "steps": 30,
+                }
+                
+                async with httpx.AsyncClient() as client:
+                    response = await client.post(stability_api_url, headers=headers, json=payload, timeout=45.0)
+                    
+                    if response.status_code == 200:
+                        data = response.json()
+                        # Stability returns base64 directly
+                        base64_image = data["artifacts"][0]["base64"]
+                        image_url = f"data:image/png;base64,{base64_image}"
+                        model_used = "Stability AI (SDXL)"
+                    else:
+                        print(f"Stability AI Error {response.status_code}: {response.text}")
+            except Exception as e:
+                print(f"Stability AI Exception: {e}")
+
+        # Option C: Hugging Face Inference API (High Quality, requires Token)
         if not image_url and settings.hf_api_token:
             try:
                 api_url = "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-xl-base-1.0"
