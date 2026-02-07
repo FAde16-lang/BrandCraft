@@ -20,16 +20,13 @@ class Settings(BaseSettings):
     groq_api_key: str = os.getenv("GROQ_API_KEY", "")
     model_name: str = os.getenv("MODEL_NAME", "llama3-70b-8192") # Modified default model name
     
-    # Optional Image Generation Keys
+    # Optional Image Generation
     hf_api_token: Optional[str] = os.getenv("HF_API_TOKEN", None)
-    google_api_key: Optional[str] = os.getenv("GOOGLE_API_KEY", None)
+    sdxl_model: str = os.getenv("SDXL_MODEL", "stabilityai/stable-diffusion-xl-base-1.0")
     stability_api_key: Optional[str] = os.getenv("STABILITY_API_KEY", None)
     
     # Authentication
     google_client_id: Optional[str] = os.getenv("GOOGLE_CLIENT_ID", None)
-    
-    # Database
-    mongodb_uri: Optional[str] = os.getenv("MONGODB_URI", None)
     
     # Server Configuration
     host: str = os.getenv("HOST", "0.0.0.0")

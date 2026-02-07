@@ -5,25 +5,13 @@ Main FastAPI Application Entry Point
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from contextlib import asynccontextmanager
+from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
-from app.routers import brand, content, chat, sentiment, design, logo, users
-from app.database import connect_to_mongo, close_mongo_connection
+from app.routers import brand, content, chat, sentiment, design, logo, users, export
 
 # Get settings
 settings = get_settings()
-
-
-# Lifecycle events
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    """Application lifecycle manager."""
-    # Startup
-    await connect_to_mongo()
-    yield
-    # Shutdown
-    await close_mongo_connection()
 
 
 # Initialize FastAPI application
@@ -33,19 +21,16 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc",
-    lifespan=lifespan,
 )
 
 # Configure CORS for frontend integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allow all origins for development
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-from fastapi.staticfiles import StaticFiles
 
 # Include API routers
 app.include_router(brand.router, prefix=settings.api_prefix, tags=["Brand"])
@@ -55,19 +40,13 @@ app.include_router(sentiment.router, prefix=settings.api_prefix, tags=["Sentimen
 app.include_router(design.router, prefix=settings.api_prefix, tags=["Design"])
 app.include_router(logo.router, prefix=settings.api_prefix, tags=["Logo"])
 app.include_router(users.router, prefix=settings.api_prefix, tags=["Users"])
-
-# Export router (PDF generation)
-from app.routers import export
 app.include_router(export.router, prefix=settings.api_prefix, tags=["Export"])
-
 
 
 @app.get("/api/config", tags=["Config"])
 async def get_public_config():
     """Returns public configuration for frontend."""
-    return {
-        "google_client_id": settings.google_client_id
-    }
+    return {"google_client_id": settings.google_client_id}
 
 
 @app.get("/health", tags=["Health"])
@@ -79,10 +58,9 @@ async def health_check():
         "model": settings.model_name
     }
 
-# Mount frontend static files
-# This must be after API routes to avoid shadowing them
-app.mount("/", StaticFiles(directory="d:/AIGEN/Project/frontend", html=True), name="frontend")
 
+# Mount frontend static files (must be after API routes)
+app.mount("/", StaticFiles(directory="d:/AIGEN/Project/frontend", html=True), name="frontend")
 
 
 if __name__ == "__main__":
