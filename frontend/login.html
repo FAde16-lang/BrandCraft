@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BizForge</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, #1a1f35 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ambient background effects */
+        .login-container::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            top: -100px;
+            right: -100px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .login-container::after {
+            content: '';
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%);
+            bottom: -100px;
+            left: -100px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .login-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 3rem;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+
+        .login-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        .login-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+        }
+
+        .google-btn-wrapper {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            min-height: 44px;
+            /* Prevent layout shift */
+        }
+
+        .divider {
+            margin: 2rem 0;
+            display: flex;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--glass-border);
+        }
+
+        .divider span {
+            padding: 0 1rem;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 1.5rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Error message styling */
+        #authError {
+            color: #ef4444;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+            padding: 0.5rem;
+            background: rgba(239, 68, 68, 0.1);
+            border-radius: 6px;
+        }
+    </style>
+</head>
+
+<body class="dark-theme">
+    <div class="login-container">
+        <div class="login-card">
+            <a href="/" style="text-decoration: none;">
+                <div class="login-logo">BizForge</div>
+            </a>
+            <p class="login-subtitle">Sign in to access your branding suite</p>
+
+            <!-- Google Sign-In Button Container -->
+            <div class="google-btn-wrapper">
+                <div id="g_id_onload" data-client_id="YOUR_GOOGLE_CLIENT_ID_PLACEHOLDER" data-context="signin"
+                    data-ux_mode="popup" data-callback="handleCredentialResponse" data-auto_prompt="false">
+                </div>
+
+                <div class="g_id_signin" data-type="standard" data-shape="pill" data-theme="filled_black"
+                    data-text="signin_with" data-size="large" data-logo_alignment="left">
+                </div>
+            </div>
+
+            <div id="authError"></div>
+
+            <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+                By signing in, you agree to our Terms of Service and Privacy Policy. Default demo access is available.
+            </p>
+
+            <a href="/" class="back-link">← Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Auth Script -->
+    <script src="js/auth.js"></script>
+    <script>
+        // Fetch configuration from backend
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const response = await fetch('/api/config');
+                const config = await response.json();
+
+                if (config.google_client_id) {
+                    const clientElement = document.getElementById('g_id_onload');
+                    clientElement.setAttribute('data-client_id', config.google_client_id);
+
+                    // Initialize Google Sign-In if library is loaded
+                    if (window.google && window.google.accounts) {
+                        google.accounts.id.initialize({
+                            client_id: config.google_client_id,
+                            callback: handleCredentialResponse
+                        });
+                        google.accounts.id.renderButton(
+                            document.querySelector('.g_id_signin'),
+                            { theme: "filled_black", size: "large", type: "standard", shape: "pill" }
+                        );
+                    }
+                } else {
+                    const errorDiv = document.getElementById('authError');
+                    errorDiv.innerHTML = 'Google Sign-In is not configured.<br>Please set <code>GOOGLE_CLIENT_ID</code> in .env';
+                    errorDiv.style.display = 'block';
+                }
+            } catch (e) {
+                console.error("Config Fetch Error", e);
+            }
+        });
+    </script>
+</body>
+
+</html>
