@@ -81,6 +81,42 @@ async function generateLogo(brandName, industry, keywords) {
 }
 
 /**
+ * Edit logo using AI text commands
+ * @param {string} imageBase64 - Current logo as base64 (without data:image prefix)
+ * @param {string} editPrompt - What changes to make, e.g., "make the background blue"
+ * @param {number} strength - How much to change (0.0 = subtle, 1.0 = major)
+ * @returns {Promise<Object>} API response with edited image
+ */
+async function editLogo(imageBase64, editPrompt, strength = 0.7) {
+    try {
+        const response = await fetch(`${API_BASE_URL}/logo/edit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                image_base64: imageBase64,
+                edit_prompt: editPrompt,
+                strength: strength
+            })
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.detail || `HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        return {
+            success: data.success,
+            image_url: data.image_url,
+            edit_applied: data.edit_applied
+        };
+    } catch (error) {
+        console.error('Error editing logo:', error);
+        throw error;
+    }
+}
+
+/**
  * Generate marketing content
  * @param {string} brandName - Brand name
  * @param {string} description - Brand description

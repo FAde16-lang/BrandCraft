@@ -8,7 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
-from app.routers import brand, content, chat, sentiment, design, logo, users, export
+from app.routers import brand, content, chat, sentiment, design, logo, users, export, editor
 
 # Get settings
 settings = get_settings()
@@ -39,6 +39,7 @@ app.include_router(chat.router, prefix=settings.api_prefix, tags=["Chat"])
 app.include_router(sentiment.router, prefix=settings.api_prefix, tags=["Sentiment"])
 app.include_router(design.router, prefix=settings.api_prefix, tags=["Design"])
 app.include_router(logo.router, prefix=settings.api_prefix, tags=["Logo"])
+app.include_router(editor.router, prefix=settings.api_prefix, tags=["Editor"])
 app.include_router(users.router, prefix=settings.api_prefix, tags=["Users"])
 app.include_router(export.router, prefix=settings.api_prefix, tags=["Export"])
 
