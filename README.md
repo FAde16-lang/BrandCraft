@@ -1,81 +1,109 @@
-# BizForge Backend
+# BizForge - AI-Powered Branding & Analytics Platform
 
-GenAI-powered branding and business analytics platform for startups, creators, and small businesses.
+![BizForge Banner](https://via.placeholder.com/1200x400?text=BizForge+AI+Platform)
 
-## Features
+BizForge is a comprehensive **GenAI-powered platform** designed to empower startups, creators, and small businesses. It automates the creative and analytical aspects of brand building, from generating unique brand identities to providing data-driven business insights.
 
-- **Brand Name Generator** - Generate creative, memorable brand names
-- **Marketing Content Creator** - Create taglines, social posts, emails, and ad copy
-- **Branding Chatbot** - AI consultant for brand strategy and business analytics
-- **Sentiment Analysis** - Analyze customer feedback and social mentions
-- **Design System Generator** - Get color palettes and typography recommendations
-- **Logo Prompt Generator** - Generate prompts for AI logo design tools
+## 🚀 Key Features
 
-## Tech Stack
+### 🎨 AI Branding Suite
+- **Brand Name Generator**: Creates unique, available, and memorable brand names based on industry and values.
+- **AI Logo Designer**: Generates professional, vector-style logos using **Stability AI SDXL**.
+- **Design System Creator**: Auto-generates cohesive color palettes and typography recommendations.
+- **Brand Identity & Voice**: Defines your brand's core values, mission, and tone of voice.
 
-- **Framework**: FastAPI
-- **AI Engine**: Groq Cloud (LLaMA-3.3-70b)
-- **Validation**: Pydantic
+### 📢 Marketing & Content
+- **Content Generator**: AI-crafted social media posts, ad copy, emails, and taglines.
+- **Social Media Preview**: Visualizes how your content will look on Instagram, Twitter, and LinkedIn.
+- **Merchandise Mockups**: Real-time previews of your brand on business cards and signage.
 
-## Quick Start
+### 📊 Business Intelligence
+- **AI Business Consultant**: A conversational AI chatbot for strategy validation and market insights.
+- **Sentiment Analysis**: Analyzes customer feedback and text to determine emotional tone.
+- **Brand Bible Export**: Exports a comprehensive PDF brand guideline document.
 
-### 1. Install Dependencies
+## 🛠️ Technology Stack
 
+- **Backend**: FastAPI (Python 3.10+)
+- **AI Models**: 
+  - **Text**: LLaMA-3.3-70b (via Groq Cloud) for high-speed inference.
+  - **Image**: Stability AI SDXL for premium visual generation.
+  - **Chat**: Gemini 2.0 Flash for conversational intelligence.
+- **Database**: MongoDB (User data & brand assets).
+- **Frontend**: Vanilla JS / HTML5 / CSS3 (Modern, responsive dashboard).
+- **Authentication**: Google OAuth 2.0.
+
+## 📦 Installation & Setup
+
+### Prerequisites
+- Python 3.10 or higher
+- MongoDB (Local or Atlas)
+- API Keys: Groq Cloud, Stability AI, Google Cloud Console
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/FAde16-lang/BrandCraft.git
+cd BrandCraft
+```
+
+### 2. Set Up Virtual Environment
+```bash
+python -m venv .venv
+# Windows
+.venv\Scripts\activate
+# Mac/Linux
+source .venv/bin/activate
+```
+
+### 3. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Configure Environment
+### 4. Configure Environment
+Create a `.env` file in the root directory:
+```ini
+# Core Configuration
+GROQ_API_KEY=your_groq_api_key
+MODEL_NAME=llama-3.3-70b-versatile
+PORT=8000
+DEBUG=true
 
+# Database
+MONGODB_URI=mongodb://localhost:27017/bizforge
+
+# Image Generation
+STABILITY_API_KEY=your_stability_key
+
+# Authentication
+GOOGLE_CLIENT_ID=your_google_client_id
+```
+
+### 5. Run the Application
 ```bash
-cp .env.example .env
-# Edit .env and add your GROQ_API_KEY
+uvicorn app.main:app --reload
 ```
+Visit `http://localhost:8000` to access the platform.
 
-### 3. Run the Server
-
-```bash
-uvicorn app.main:app --reload --port 8000
-```
-
-### 4. Access API Documentation
-
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
-
-## API Endpoints
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/brand/generate-name` | POST | Generate brand names |
-| `/api/content/generate` | POST | Create marketing content |
-| `/api/chat` | POST | Branding consultant chat |
-| `/api/sentiment/analyze` | POST | Analyze text sentiment |
-| `/api/design/palette` | POST | Generate color palette |
-| `/api/logo/prompt` | POST | Generate logo prompts |
-| `/health` | GET | Health check |
-
-## Project Structure
+## 📂 Project Structure
 
 ```
-app/
-├── main.py           # FastAPI entry point
-├── config.py         # Environment configuration
-├── services/
-│   └── ai_service.py # Groq AI integration
-├── routers/          # API endpoints
-├── schemas/          # Pydantic models
-└── prompts/          # AI prompt templates
+├── app/
+│   ├── main.py            # Application entry point
+│   ├── config.py          # Configuration management
+│   ├── routers/           # API endpoints (Auth, Brand, Logo, Chat, etc.)
+│   ├── services/          # Business logic & AI integrations
+│   ├── schemas/           # Pydantic data models
+│   └── prompts/           # AI system prompts
+├── frontend/              # Static assets (HTML/CSS/JS)
+├── .env                   # Environment variables (Git-ignored)
+└── requirements.txt       # Python dependencies
 ```
 
-## Environment Variables
+## 🤝 Contributing
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `GROQ_API_KEY` | Groq Cloud API key | Required |
-| `MODEL_NAME` | LLM model name | llama-3.3-70b-versatile |
-| `PORT` | Server port | 8000 |
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## License
+## 📄 License
 
-MIT License
+This project is licensed under the MIT License - see the LICENSE file for details.

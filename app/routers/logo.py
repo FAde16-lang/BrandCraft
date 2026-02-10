@@ -34,7 +34,7 @@ async def generate_logo_prompt(request: LogoPromptRequest):
         # Primary: Stability AI SDXL (requires STABILITY_API_KEY)
         if settings.stability_api_key:
             try:
-                print(f"🎨 Generating logo with Stability AI SDXL...")
+                # print(f"🎨 Generating logo with Stability AI SDXL...")
                 stability_api_url = "https://api.stability.ai/v1/generation/stable-diffusion-xl-1024-v1-0/text-to-image"
                 headers = {
                     "Content-Type": "application/json",
@@ -62,7 +62,7 @@ async def generate_logo_prompt(request: LogoPromptRequest):
                         base64_image = data["artifacts"][0]["base64"]
                         image_url = f"data:image/png;base64,{base64_image}"
                         model_used = "Stability AI SDXL"
-                        print(f"✅ Stability AI SDXL generated logo successfully")
+                        # print(f"✅ Stability AI SDXL generated logo successfully")
                     else:
                         error_text = response.text[:300] if response.text else "Unknown error"
                         print(f"⚠️ Stability AI Error {response.status_code}: {error_text}")
@@ -71,7 +71,7 @@ async def generate_logo_prompt(request: LogoPromptRequest):
         
         # Fallback: Placeholder if Stability AI fails
         if not image_url:
-            print("⚠️ Using placeholder - Stability AI not available")
+            # print("⚠️ Using placeholder - Stability AI not available")
             image_url = "https://via.placeholder.com/512x512.png?text=Logo+Generation+Failed"
             model_used = "Placeholder"
         
