@@ -13,24 +13,24 @@ BizForge follows a modern **Microservices-ready** architecture, decoupling the A
 
 ```mermaid
 graph TD
-    Client[Web Client (HTML/JS)] -->|REST API| API_Gateway[FastAPI Gateway]
+    Client["Web Client (HTML/JS)"] -->|REST API| API_Gateway["FastAPI Gateway"]
     
     subgraph "Core Services"
-        API_Gateway --> Auth[Auth Service]
-        API_Gateway --> Brand[Brand Engine]
-        API_Gateway --> Content[Content Engine]
-        API_Gateway --> Analytics[Analytics Engine]
+        API_Gateway --> Auth["Auth Service"]
+        API_Gateway --> Brand["Brand Engine"]
+        API_Gateway --> Content["Content Engine"]
+        API_Gateway --> Analytics["Analytics Engine"]
     end
     
     subgraph "AI Infrastructure"
-        Brand -->|Inference| LLM_Service[Groq Cloud (LLaMA 3.3)]
+        Brand -->|Inference| LLM_Service["Groq Cloud (LLaMA 3.3)"]
         Content -->|Inference| LLM_Service
-        Brand -->|Generation| Image_Service[Stability AI (SDXL)]
-        Analytics -->|Processing| Sentiment_Engine[Sentiment Analysis]
+        Brand -->|Generation| Image_Service["Stability AI (SDXL)"]
+        Analytics -->|Processing| Sentiment_Engine["Sentiment Analysis"]
     end
     
     subgraph "Persistence"
-        Auth -->|Auth/User Data| MongoDB[(MongoDB Atlas)]
+        Auth -->|Auth/User Data| MongoDB[("MongoDB Atlas")]
         Brand -->|Assets| MongoDB
     end
 ```
