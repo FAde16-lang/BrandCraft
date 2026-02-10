@@ -1,6 +1,4 @@
-# BizForge | Enterprise-Grade Brand Intelligence Platform
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python Version](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/downloads/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.109.0-009688.svg?style=flat&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Stability AI](https://img.shields.io/badge/Stability%20AI-SDXL-purple)](https://stability.ai/)
@@ -92,8 +90,6 @@ graph TD
 
 ## 🤝 Contributing
 
-We welcome contributions that align with our mission of accessible business intelligence. Please read `CONTRIBUTING.md` for our code of conduct and pull request process.
+We welcome contributions that align with our mission of accessible business intelligence. Please feel free to submit a Pull Request.
 
-## 📜 License
 
-This project is licensed under the MIT License - see the `LICENSE` file for details.
