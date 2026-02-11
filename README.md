@@ -30,8 +30,8 @@ graph TD
     end
     
     subgraph "Persistence"
-        Auth -->|Auth/User Data| MongoDB[("MongoDB Atlas")]
-        Brand -->|Assets| MongoDB
+        Auth -->|Token Storage| LocalStore[("Local Storage (Client)")]
+        Brand -->|Settings| LocalStore
     end
 ```
 
@@ -53,7 +53,6 @@ graph TD
 |-----------|------------|-----------|
 | **Backend** | Python 3.10+, FastAPI | High-performance, async support, native Pydantic integration for data validation. |
 | **Frontend** | Vanilla JS, HTML5, CSS3 | Lightweight, zero-dependency client optimized for speed and compatibility. |
-| **Database** | MongoDB | Flexible schema design ideal for storing unstructured generative content and user profiles. |
 | **AI Ops** | Groq Cloud, Stability AI | Best-in-class inference speeds (Groq) and image quality (SDXL). |
 | **Auth** | OAuth 2.0 (Google) | Industry-standard secure delegation protocol. |
 
@@ -61,7 +60,7 @@ graph TD
 
 ### Prerequisites
 - Python 3.10+
-- MongoDB Instance
+
 - API Keys: Groq Cloud, Stability AI, Google Cloud
 
 ### Installation
@@ -87,6 +86,16 @@ graph TD
     ```bash
     uvicorn app.main:app --reload
     ```
+
+## 🛣️ Roadmap
+
+### Phase 1: MVP (Current)
+- **Client-Side Storage**: Leverages browser LocalStorage for zero-latency user preferences and token management.
+- **Stateless Architecture**: Maximizes scalability and reduces infrastructure costs.
+
+### Phase 2: Enterprise Scaling (Planned)
+- **Centralized Persistence**: Migration to **MongoDB Atlas** for cross-device synchronization.
+- **Advanced User Roles**: Implementation of RBAC (Role-Based Access Control) for team collaboration.
 
 ## 🤝 Contributing
 
